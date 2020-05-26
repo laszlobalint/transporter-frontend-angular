@@ -5,19 +5,17 @@ import { Message, Passenger, ContactHelp, UpdatePassengerDto } from './../_model
 
 @Injectable()
 export class PassengerService {
-  public readonly PASSENGER_API_URL = 'http://localhost:8080/passenger';
-
   constructor(private readonly http: HttpClient) {}
 
   public fetch(id: string): Observable<Passenger> {
-    return this.http.get<Passenger>(`${this.PASSENGER_API_URL}/${+id}`);
+    return this.http.get<Passenger>(`/${+id}`);
   }
 
   public update(updatePassengerDto: UpdatePassengerDto): Observable<Passenger> {
-    return this.http.put<Passenger>(`${this.PASSENGER_API_URL}/${updatePassengerDto.id}`, updatePassengerDto);
+    return this.http.put<Passenger>(`/${updatePassengerDto.id}`, updatePassengerDto);
   }
 
   public sendMessage(contactHelp: ContactHelp): Observable<Message> {
-    return this.http.post<Message>(`${this.PASSENGER_API_URL}/contact`, contactHelp);
+    return this.http.post<Message>(`/contact`, contactHelp);
   }
 }

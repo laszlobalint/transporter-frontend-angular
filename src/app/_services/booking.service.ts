@@ -5,23 +5,21 @@ import { Booking, DeleteBookingDto } from '../_models';
 
 @Injectable()
 export class BookingService {
-  public readonly BOOKING_API_URL = 'http://localhost:8080/booking';
-
   constructor(private readonly http: HttpClient) {}
 
   public fetchActive(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.BOOKING_API_URL}`);
+    return this.http.get<Booking[]>(``);
   }
 
   public fetchInactive(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.BOOKING_API_URL}/past/all`);
+    return this.http.get<Booking[]>(`/past/all`);
   }
 
   public save(booking: Booking): Observable<Booking> {
-    return this.http.post<Booking>(`${this.BOOKING_API_URL}`, booking);
+    return this.http.post<Booking>(``, booking);
   }
 
   public delete(id: number): Observable<DeleteBookingDto> {
-    return this.http.delete<DeleteBookingDto>(`${this.BOOKING_API_URL}/${id}`);
+    return this.http.delete<DeleteBookingDto>(`/${id}`);
   }
 }
