@@ -7,19 +7,21 @@ import { Booking, DeleteBookingDto } from '../_models';
 export class BookingService {
   constructor(private readonly http: HttpClient) {}
 
+  private readonly URL = 'https://transporter-srb-hun.herokuapp.com';
+
   public fetchActive(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(``);
+    return this.http.get<Booking[]>(`${this.URL}`);
   }
 
   public fetchInactive(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`/past/all`);
+    return this.http.get<Booking[]>(`${this.URL}/past/all`);
   }
 
   public save(booking: Booking): Observable<Booking> {
-    return this.http.post<Booking>(``, booking);
+    return this.http.post<Booking>(`${this.URL}`, booking);
   }
 
   public delete(id: number): Observable<DeleteBookingDto> {
-    return this.http.delete<DeleteBookingDto>(`/${id}`);
+    return this.http.delete<DeleteBookingDto>(`${this.URL}/${id}`);
   }
 }

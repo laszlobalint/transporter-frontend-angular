@@ -7,7 +7,9 @@ import { Transport } from '../_models';
 export class TransportService {
   constructor(private readonly http: HttpClient) {}
 
+  private readonly URL = 'https://transporter-srb-hun.herokuapp.com';
+
   public fetch(): Observable<Transport[]> {
-    return this.http.get<Transport[]>(`/transports/all`);
+    return this.http.get<Transport[]>(`${this.URL}/transports/all`);
   }
 }
