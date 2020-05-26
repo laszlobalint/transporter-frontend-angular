@@ -9,9 +9,9 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
-    "postinstall": "ng build --aot --prod",
+    "start": "ng serve --proxy-config proxy.conf.json --max_old_space_size=2560",
+    "build": "ng build --max_old_space_size=2560",
+    "postinstall": "ng build --aot --prod --max_old_space_size=2560",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
