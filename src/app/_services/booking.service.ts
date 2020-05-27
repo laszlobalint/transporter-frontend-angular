@@ -7,7 +7,7 @@ import { Booking, DeleteBookingDto } from '../_models';
 export class BookingService {
   constructor(private readonly http: HttpClient) {}
 
-  private readonly URL = 'https://transporter-srb-hun.herokuapp.com';
+  private readonly URL = 'https://transporter-srb-hun.herokuapp.com/booking';
 
   public fetchActive(): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.URL}`);

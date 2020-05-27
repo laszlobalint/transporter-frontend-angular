@@ -10,15 +10,13 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --aot --prod"
+    "heroku-postbuild": "ng build --prod"
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.901.7",
     "@angular/animations": "^9.1.2",
-    "@angular/cli": "^9.1.7",
     "@angular/common": "^9.1.2",
     "@angular/compiler": "^9.1.2",
-    "@angular/compiler-cli": "^9.1.2",
     "@angular/core": "^9.1.2",
     "@angular/forms": "^9.1.2",
     "@angular/language-service": "^9.1.2",
@@ -54,7 +52,10 @@
     "tslib": "^1.10.0",
     "tslint": "~6.1.1",
     "typescript": "~3.8.3",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+    "@angular/cli": "^9.1.7",
+    "@angular/compiler-cli": "^9.1.9",
+    "enhanced-resolve": "^3.3.0"
   },
   "devDependencies": {},
   "repository": {

@@ -1,11 +1,12 @@
 const express = require('express');
+const path = require('path');
 
 const app = express();
 
-app.use(express.static('./dist/transporter'));
+app.use(express.static(__dirname + '/dist/transporter'));
 
 app.get('/*', function (req, res) {
-  res.sendFile('index.html', { root: '/dist/transporter/' });
+  res.sendFile(path.join(__dirname + '/dist/transporter/index.html'));
 });
 
 app.listen(process.env.PORT || 8080);
