@@ -7,7 +7,7 @@ import { Message, LoginPassengerDto, RegisterPassengerDto } from './../_models';
 export class AuthService {
   constructor(private readonly http: HttpClient) {}
 
-  private readonly URL = 'https://transporter-srb-hun.herokuapp.com';
+  private readonly URL = 'https://transporter-srb-hun.herokuapp.com/passenger';
 
   public login(loginPassenger: LoginPassengerDto): Observable<string> {
     return this.http.post<string>(`${this.URL}/login`, loginPassenger, {
