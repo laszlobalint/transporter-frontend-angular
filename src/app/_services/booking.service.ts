@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from './../../environments/environment';
 import { Booking, DeleteBookingDto } from '../_models';
 
 @Injectable()
 export class BookingService {
   constructor(private readonly http: HttpClient) {}
 
-  private readonly URL = 'https://transporter-srb-hun.herokuapp.com/booking';
+  private readonly URL = `${environment.url}/booking`;
 
   public fetchActive(): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.URL}`);

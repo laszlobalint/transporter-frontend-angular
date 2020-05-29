@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Message, Passenger, ContactHelp, UpdatePassengerDto } from './../_models';
+import { environment } from './../../environments/environment';
 
 @Injectable()
 export class PassengerService {
   constructor(private readonly http: HttpClient) {}
 
-  private readonly URL = 'https://transporter-srb-hun.herokuapp.com/passenger';
+  private readonly URL = `${environment.url}/passenger`;
 
   public fetch(id: string): Observable<Passenger> {
     return this.http.get<Passenger>(`${this.URL}/${+id}`);
