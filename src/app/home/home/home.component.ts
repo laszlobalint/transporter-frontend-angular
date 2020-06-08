@@ -1,6 +1,7 @@
-import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as fromRoot from '../../store';
 import { Transport, Passenger, Booking, LocationHungary, LocationSerbia } from '../../_models';
@@ -15,8 +16,9 @@ export class HomeComponent implements OnInit {
   public transports$: Observable<Transport[]>;
   public LocationHungary = LocationHungary;
   public LocationSerbia = LocationSerbia;
+  public dateRangeParams?: string[];
 
-  constructor(private readonly rootStore: Store<fromRoot.State>) {
+  constructor(private readonly rootStore: Store<fromRoot.State>, private readonly route: ActivatedRoute) {
     this.passenger$ = this.rootStore.select('auth').pipe(map((state) => state.passenger));
     this.bookings$ = this.rootStore.select('bookings').pipe(map((state) => this.sortByDate(state.bookings)));
     this.transports$ = this.rootStore.select('transports').pipe(map((state) => this.sortByDate(state.transports)));
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.rootStore.dispatch(fromRoot.FetchTransports());
+    this.route.queryParamMap.subscribe((params) => (this.dateRangeParams = params.getAll('dateRange')));
   }
 
   public onDeleteBooking(id: number): void {
