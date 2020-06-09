@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { Transport, Passenger, Booking, LocationHungary, LocationSerbia } from '
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
   public passenger$: Observable<Passenger>;
@@ -16,7 +17,6 @@ export class HomeComponent implements OnInit {
   public transports$: Observable<Transport[]>;
   public LocationHungary = LocationHungary;
   public LocationSerbia = LocationSerbia;
-  public dateRangeParams?: string[];
 
   constructor(private readonly rootStore: Store<fromRoot.State>, private readonly route: ActivatedRoute) {
     this.passenger$ = this.rootStore.select('auth').pipe(map((state) => state.passenger));
@@ -26,7 +26,22 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.rootStore.dispatch(fromRoot.FetchTransports());
-    this.route.queryParamMap.subscribe((params) => (this.dateRangeParams = params.getAll('dateRange')));
+    this.route.queryParamMap.subscribe((params) => params.getAll('dateRange'));
+  }
+
+  public filterTransportsByDateRange(range: string[]): void {
+    this.transports$ = this.rootStore.select('transports').pipe(
+      map((state) =>
+        this.sortByDate(state.transports, range).map((t) => {
+          if (
+            range.length > 0 &&
+            new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) >= new Date(range[0]) &&
+            new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) <= new Date(range[1])
+          )
+            return t;
+        }),
+      ),
+    );
   }
 
   public onDeleteBooking(id: number): void {
@@ -35,7 +50,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private sortByDate(array: any[]): any[] {
+  private sortByDate(array: any[], range?: string[]) {
+    if (range && range.length > 0) {
+      array = array.filter(
+        (t) =>
+          new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) >= new Date(range[0]) &&
+          new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) <= new Date(range[1]),
+      );
+    }
     return array.sort(
       (a, b) =>
         new Date(a.departureTime[0], a.departureTime[1] - 1, a.departureTime[2], a.departureTime[3], a.departureTime[4]).getTime() -
