@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   public transports$: Observable<Transport[]>;
   public LocationHungary = LocationHungary;
   public LocationSerbia = LocationSerbia;
+  public startDate?: Date;
+  public endDate?: Date;
 
   constructor(private readonly rootStore: Store<fromRoot.State>, private readonly route: ActivatedRoute) {
     this.passenger$ = this.rootStore.select('auth').pipe(map((state) => state.passenger));
@@ -26,22 +28,22 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.rootStore.dispatch(fromRoot.FetchTransports());
-    this.route.queryParamMap.subscribe((params) => params.getAll('dateRange'));
+    this.route.queryParamMap.subscribe((params) => {
+      if (params.get('dateRange') && !!params) {
+        this.startDate = new Date(params.getAll('dateRange')[0]);
+        this.endDate = new Date(params.getAll('dateRange')[1]);
+      }
+    });
   }
 
-  public filterTransportsByDateRange(range: string[]): void {
-    this.transports$ = this.rootStore.select('transports').pipe(
-      map((state) =>
-        this.sortByDate(state.transports, range).map((t) => {
-          if (
-            range.length > 0 &&
-            new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) >= new Date(range[0]) &&
-            new Date(t.departureTime[0], t.departureTime[1], t.departureTime[2]) <= new Date(range[1])
-          )
-            return t;
-        }),
-      ),
-    );
+  public filterByDateRangeValidation(transport: Transport): boolean {
+    const departureTime = new Date(transport.departureTime[0], transport.departureTime[1], transport.departureTime[2]);
+    if (
+      (this.startDate && this.endDate && departureTime >= this.startDate && departureTime <= this.endDate) ||
+      (!this.startDate && !this.endDate)
+    )
+      return true;
+    else return false;
   }
 
   public onDeleteBooking(id: number): void {
