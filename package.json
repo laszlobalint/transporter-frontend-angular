@@ -61,7 +61,7 @@
   },
   "devDependencies": {},
   "repository": {
-    "url": "https://github.com/laszlobalint/transporter",
+    "url": "https://github.com/laszlobalint/transporter_frontend",
     "type": "git"
   },
   "engines": {
